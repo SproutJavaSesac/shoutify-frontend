@@ -1,68 +1,90 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Mail, Lock, Eye, EyeOff, Github, DiscIcon as Discord } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Github,
+  DiscIcon as Discord,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !password) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate login process
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: "Login successful",
       description: "Welcome back!",
-    })
+    });
 
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   const handleSocialLogin = (provider: string) => {
     toast({
       title: `${provider} login`,
       description: `Redirecting to ${provider}...`,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Sign in to your account</CardTitle>
-          <CardDescription>Choose your preferred sign in method</CardDescription>
+          <CardTitle className="text-2xl font-bold">
+            Sign in to your account
+          </CardTitle>
+          <CardDescription>
+            Choose your preferred sign in method
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Social Login Buttons */}
           <div className="grid grid-cols-2 gap-2">
-            <Button type="button" variant="outline" className="w-full" onClick={() => handleSocialLogin("Google")}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => handleSocialLogin("Google")}
+            >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -131,7 +153,9 @@ export default function LoginPage() {
               <Separator className="w-full" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white dark:bg-gray-950 px-2 text-gray-500">Or continue with email</span>
+              <span className="bg-white dark:bg-gray-950 px-2 text-gray-500">
+                Or continue with email
+              </span>
             </div>
           </div>
 
@@ -201,7 +225,9 @@ export default function LoginPage() {
 
           {/* Sign Up Link */}
           <div className="text-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400">{"Don't have an account? "}</span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {"Don't have an account? "}
+            </span>
             <Link
               href="/signup"
               className="font-medium text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300"
@@ -212,5 +238,5 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -1,20 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Search, Filter, SortAsc, Heart, MessageSquare, Flag } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Search,
+  Filter,
+  SortAsc,
+  Heart,
+  MessageSquare,
+  Flag,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -23,7 +36,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Pagination,
   PaginationContent,
@@ -32,18 +45,18 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useToast } from "@/hooks/use-toast"
+} from "@/components/ui/pagination";
+import { useToast } from "@/hooks/use-toast";
 
 interface Post {
-  id: string
-  title: string
-  content: string
-  author: string
-  date: string
-  empathyCount: number
-  commentCount: number
-  emotionTag: "happy" | "sad" | "angry" | "excited" | "confused" | "proud"
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  date: string;
+  empathyCount: number;
+  commentCount: number;
+  emotionTag: "happy" | "sad" | "excited" | "confused" | "proud";
 }
 
 const emotionEmojis = {
@@ -52,7 +65,7 @@ const emotionEmojis = {
   excited: "🤩",
   confused: "😕",
   proud: "😤",
-}
+};
 
 const emotionColors = {
   happy: "bg-yellow-100 text-yellow-800",
@@ -60,7 +73,7 @@ const emotionColors = {
   excited: "bg-purple-100 text-purple-800",
   confused: "bg-gray-100 text-gray-800",
   proud: "bg-green-100 text-green-800",
-}
+};
 
 // Add predefined report reasons
 const REPORT_REASONS = [
@@ -72,7 +85,7 @@ const REPORT_REASONS = [
   { value: "copyright", label: "Copyright Violation" },
   { value: "off_topic", label: "Off Topic" },
   { value: "other", label: "Other" },
-]
+];
 
 // Add ReportModal component
 function ReportModal({
@@ -80,50 +93,50 @@ function ReportModal({
   targetId,
   trigger,
 }: {
-  targetType: "post" | "comment"
-  targetId: string
-  trigger: React.ReactNode
+  targetType: "post" | "comment";
+  targetId: string;
+  trigger: React.ReactNode;
 }) {
-  const { toast } = useToast()
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedReason, setSelectedReason] = useState("")
-  const [customReason, setCustomReason] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async () => {
-    if (!selectedReason) return
+    if (!selectedReason) return;
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setIsSubmitting(false);
+    setIsSubmitted(true);
 
     // Show success message after a brief delay
     setTimeout(() => {
-      setIsOpen(false)
-      setIsSubmitted(false)
-      setSelectedReason("")
-      setCustomReason("")
+      setIsOpen(false);
+      setIsSubmitted(false);
+      setSelectedReason("");
+      setCustomReason("");
       toast({
         title: "Report Submitted",
         description: `Thank you for reporting this ${targetType}. Our moderators will review it shortly.`,
-      })
-    }, 1500)
-  }
+      });
+    }, 1500);
+  };
 
   const handleClose = () => {
     if (!isSubmitting && !isSubmitted) {
-      setIsOpen(false)
-      setSelectedReason("")
-      setCustomReason("")
+      setIsOpen(false);
+      setSelectedReason("");
+      setCustomReason("");
     }
-  }
+  };
 
-  const isSubmitDisabled = !selectedReason || isSubmitting || isSubmitted
+  const isSubmitDisabled = !selectedReason || isSubmitting || isSubmitted;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -132,21 +145,36 @@ function ReportModal({
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Report {targetType === "post" ? "Post" : "Comment"}</DialogTitle>
+          <DialogTitle>
+            Report {targetType === "post" ? "Post" : "Comment"}
+          </DialogTitle>
           <DialogDescription>
-            Help us maintain a positive community by reporting inappropriate content.
+            Help us maintain a positive community by reporting inappropriate
+            content.
           </DialogDescription>
         </DialogHeader>
 
         {!isSubmitted ? (
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-medium mb-3 block">Why are you reporting this {targetType}?</Label>
-              <RadioGroup value={selectedReason} onValueChange={setSelectedReason} className="space-y-2">
+              <Label className="text-sm font-medium mb-3 block">
+                Why are you reporting this {targetType}?
+              </Label>
+              <RadioGroup
+                value={selectedReason}
+                onValueChange={setSelectedReason}
+                className="space-y-2"
+              >
                 {REPORT_REASONS.map((reason) => (
-                  <div key={reason.value} className="flex items-center space-x-2">
+                  <div
+                    key={reason.value}
+                    className="flex items-center space-x-2"
+                  >
                     <RadioGroupItem value={reason.value} id={reason.value} />
-                    <Label htmlFor={reason.value} className="text-sm font-normal cursor-pointer flex-1">
+                    <Label
+                      htmlFor={reason.value}
+                      className="text-sm font-normal cursor-pointer flex-1"
+                    >
                       {reason.label}
                     </Label>
                   </div>
@@ -172,21 +200,44 @@ function ReportModal({
         ) : (
           <div className="text-center py-6">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-6 h-6 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-1">Report Submitted</h3>
-            <p className="text-sm text-gray-500">Thank you for helping us maintain a safe community.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-1">
+              Report Submitted
+            </h3>
+            <p className="text-sm text-gray-500">
+              Thank you for helping us maintain a safe community.
+            </p>
           </div>
         )}
 
         {!isSubmitted && (
           <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button variant="outline" onClick={handleClose} disabled={isSubmitting} className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              disabled={isSubmitting}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button onClick={handleSubmit} disabled={isSubmitDisabled} className="w-full sm:w-auto">
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitDisabled}
+              className="w-full sm:w-auto"
+            >
               {isSubmitting ? (
                 <>
                   <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -200,22 +251,23 @@ function ReportModal({
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 export default function PostsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null)
-  const [sortBy, setSortBy] = useState("latest")
-  const [currentPage, setCurrentPage] = useState(1)
-  const postsPerPage = 5
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState("latest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 5;
 
   // Mock posts data
   const allPosts: Post[] = [
     {
       id: "1",
       title: "Understanding React Hooks in Depth",
-      content: "React Hooks have revolutionized how we write components. Let me share some advanced patterns...",
+      content:
+        "React Hooks have revolutionized how we write components. Let me share some advanced patterns...",
       author: "CodeMaster",
       date: "2024-01-21",
       empathyCount: 31,
@@ -225,7 +277,8 @@ export default function PostsPage() {
     {
       id: "2",
       title: "Building Responsive Layouts with Tailwind CSS",
-      content: "Tailwind CSS makes it incredibly easy to build responsive designs. Here are some tips...",
+      content:
+        "Tailwind CSS makes it incredibly easy to build responsive designs. Here are some tips...",
       author: "DevGuru",
       date: "2024-01-20",
       empathyCount: 18,
@@ -235,7 +288,8 @@ export default function PostsPage() {
     {
       id: "3",
       title: "JavaScript Performance Optimization Tips",
-      content: "Here are some practical tips to optimize your JavaScript code for better performance...",
+      content:
+        "Here are some practical tips to optimize your JavaScript code for better performance...",
       author: "TechWizard",
       date: "2024-01-19",
       empathyCount: 31,
@@ -245,7 +299,8 @@ export default function PostsPage() {
     {
       id: "4",
       title: "Getting Started with TypeScript",
-      content: "TypeScript adds static typing to JavaScript. Let's explore the basics...",
+      content:
+        "TypeScript adds static typing to JavaScript. Let's explore the basics...",
       author: "Anonymous",
       date: "2024-01-18",
       empathyCount: 12,
@@ -255,7 +310,8 @@ export default function PostsPage() {
     {
       id: "5",
       title: "Database Design Best Practices",
-      content: "Good database design is crucial for application performance. Here's what you need to know...",
+      content:
+        "Good database design is crucial for application performance. Here's what you need to know...",
       author: "DataDriven",
       date: "2024-01-17",
       empathyCount: 19,
@@ -265,7 +321,8 @@ export default function PostsPage() {
     {
       id: "6",
       title: "Modern CSS Grid Techniques",
-      content: "CSS Grid has changed how we approach layout design. Let's explore some advanced techniques...",
+      content:
+        "CSS Grid has changed how we approach layout design. Let's explore some advanced techniques...",
       author: "LayoutMaster",
       date: "2024-01-16",
       empathyCount: 15,
@@ -275,7 +332,8 @@ export default function PostsPage() {
     {
       id: "7",
       title: "API Design Principles",
-      content: "Building great APIs requires careful planning and consideration. Here are the key principles...",
+      content:
+        "Building great APIs requires careful planning and consideration. Here are the key principles...",
       author: "BackendPro",
       date: "2024-01-15",
       empathyCount: 22,
@@ -285,7 +343,8 @@ export default function PostsPage() {
     {
       id: "8",
       title: "State Management in React Applications",
-      content: "Managing state effectively is crucial for React applications. Let's compare different approaches...",
+      content:
+        "Managing state effectively is crucial for React applications. Let's compare different approaches...",
       author: "StateManager",
       date: "2024-01-14",
       empathyCount: 28,
@@ -295,7 +354,8 @@ export default function PostsPage() {
     {
       id: "9",
       title: "Debugging Node.js Applications",
-      content: "Effective debugging is essential for Node.js development. Here are some techniques I use...",
+      content:
+        "Effective debugging is essential for Node.js development. Here are some techniques I use...",
       author: "NodeNinja",
       date: "2024-01-13",
       empathyCount: 16,
@@ -305,44 +365,47 @@ export default function PostsPage() {
     {
       id: "10",
       title: "Web Accessibility Best Practices",
-      content: "Making your web applications accessible is not just good practice, it's essential...",
+      content:
+        "Making your web applications accessible is not just good practice, it's essential...",
       author: "A11yAdvocate",
       date: "2024-01-12",
       empathyCount: 25,
       commentCount: 13,
-      emotionTag: "angry",
+      emotionTag: "happy",
     },
-  ]
+  ];
 
   // Filter posts based on search term and emotion
   const filteredPosts = allPosts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchTerm.toLowerCase())
+      post.author.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesEmotion = selectedEmotion ? post.emotionTag === selectedEmotion : true
+    const matchesEmotion = selectedEmotion
+      ? post.emotionTag === selectedEmotion
+      : true;
 
-    return matchesSearch && matchesEmotion
-  })
+    return matchesSearch && matchesEmotion;
+  });
 
   // Sort posts
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     if (sortBy === "latest") {
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
     } else if (sortBy === "empathy") {
-      return b.empathyCount - a.empathyCount
+      return b.empathyCount - a.empathyCount;
     } else if (sortBy === "comments") {
-      return b.commentCount - a.commentCount
+      return b.commentCount - a.commentCount;
     }
-    return 0
-  })
+    return 0;
+  });
 
   // Paginate posts
-  const indexOfLastPost = currentPage * postsPerPage
-  const indexOfFirstPost = indexOfLastPost - postsPerPage
-  const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost)
-  const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
 
   const emotions = [
     { value: "happy", label: "Happy 😊" },
@@ -350,7 +413,7 @@ export default function PostsPage() {
     { value: "excited", label: "Excited 🤩" },
     { value: "confused", label: "Confused 😕" },
     { value: "proud", label: "Proud 😤" },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -414,7 +477,9 @@ export default function PostsPage() {
             {emotions.map((emotion) => (
               <Button
                 key={emotion.value}
-                variant={selectedEmotion === emotion.value ? "default" : "outline"}
+                variant={
+                  selectedEmotion === emotion.value ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => setSelectedEmotion(emotion.value)}
                 className="flex items-center gap-2"
@@ -436,7 +501,12 @@ export default function PostsPage() {
           <span className="mx-2">•</span>
           <SortAsc className="h-4 w-4" />
           <span>
-            Sorted by {sortBy === "latest" ? "latest" : sortBy === "empathy" ? "most empathy" : "most comments"}
+            Sorted by{" "}
+            {sortBy === "latest"
+              ? "latest"
+              : sortBy === "empathy"
+                ? "most empathy"
+                : "most comments"}
           </span>
         </div>
 
@@ -453,14 +523,21 @@ export default function PostsPage() {
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
-                      <Link href={`/posts/${post.id}`} className="font-semibold hover:text-blue-600 transition-colors">
+                      <Link
+                        href={`/posts/${post.id}`}
+                        className="font-semibold hover:text-blue-600 transition-colors"
+                      >
                         {post.title}
                       </Link>
-                      <Badge className={`${emotionColors[post.emotionTag]} text-xs`}>
+                      <Badge
+                        className={`${emotionColors[post.emotionTag]} text-xs`}
+                      >
                         {emotionEmojis[post.emotionTag]} {post.emotionTag}
                       </Badge>
                     </div>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{post.content}</p>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                      {post.content}
+                    </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4 text-xs text-gray-500">
                         <span className="font-medium">{post.author}</span>
@@ -478,7 +555,11 @@ export default function PostsPage() {
                         targetType="post"
                         targetId={post.id}
                         trigger={
-                          <Button variant="ghost" size="sm" className="h-auto p-1 text-gray-400 hover:text-red-600">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-1 text-gray-400 hover:text-red-600"
+                          >
                             <Flag className="h-3 w-3" />
                           </Button>
                         }
@@ -499,23 +580,25 @@ export default function PostsPage() {
                 <PaginationPrevious
                   href="#"
                   onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage > 1) setCurrentPage(currentPage - 1)
+                    e.preventDefault();
+                    if (currentPage > 1) setCurrentPage(currentPage - 1);
                   }}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                  }
                 />
               </PaginationItem>
 
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum
+                let pageNum;
                 if (totalPages <= 5) {
-                  pageNum = i + 1
+                  pageNum = i + 1;
                 } else if (currentPage <= 3) {
-                  pageNum = i + 1
+                  pageNum = i + 1;
                 } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i
+                  pageNum = totalPages - 4 + i;
                 } else {
-                  pageNum = currentPage - 2 + i
+                  pageNum = currentPage - 2 + i;
                 }
 
                 return (
@@ -523,15 +606,15 @@ export default function PostsPage() {
                     <PaginationLink
                       href="#"
                       onClick={(e) => {
-                        e.preventDefault()
-                        setCurrentPage(pageNum)
+                        e.preventDefault();
+                        setCurrentPage(pageNum);
                       }}
                       isActive={currentPage === pageNum}
                     >
                       {pageNum}
                     </PaginationLink>
                   </PaginationItem>
-                )
+                );
               })}
 
               {totalPages > 5 && currentPage < totalPages - 2 && (
@@ -544,10 +627,15 @@ export default function PostsPage() {
                 <PaginationNext
                   href="#"
                   onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage < totalPages) setCurrentPage(currentPage + 1)
+                    e.preventDefault();
+                    if (currentPage < totalPages)
+                      setCurrentPage(currentPage + 1);
                   }}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
                 />
               </PaginationItem>
             </PaginationContent>
@@ -555,5 +643,5 @@ export default function PostsPage() {
         )}
       </main>
     </div>
-  )
+  );
 }

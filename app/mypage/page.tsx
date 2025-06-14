@@ -1,35 +1,46 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { formatDistanceToNow } from "date-fns"
-import { FileText, Award, Edit, Heart, MessageSquare, Star, Trophy, Target, Zap, Calendar } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import {
+  FileText,
+  Award,
+  Edit,
+  Heart,
+  MessageSquare,
+  Star,
+  Trophy,
+  Target,
+  Zap,
+  Calendar,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Post {
-  id: string
-  title: string
-  content: string
-  timestamp: Date
-  empathyCount: number
-  commentCount: number
+  id: string;
+  title: string;
+  content: string;
+  timestamp: Date;
+  empathyCount: number;
+  commentCount: number;
 }
 
 interface BadgeItem {
-  id: string
-  name: string
-  description: string
-  icon: React.ReactNode
-  earned: boolean
-  earnedDate?: Date
-  color: string
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ReactNode;
+  earned: boolean;
+  earnedDate?: Date;
+  color: string;
 }
 
 export default function MyPage() {
@@ -40,7 +51,7 @@ export default function MyPage() {
     totalPosts: 12,
     totalComments: 45,
     earnedBadges: 6,
-  }
+  };
 
   // Mock posts data
   const [posts] = useState<Post[]>([
@@ -55,7 +66,8 @@ export default function MyPage() {
     {
       id: "2",
       title: "Building Responsive Layouts with Tailwind CSS",
-      content: "Tailwind CSS makes it incredibly easy to build responsive designs...",
+      content:
+        "Tailwind CSS makes it incredibly easy to build responsive designs...",
       timestamp: new Date("2024-01-18T14:15:00"),
       empathyCount: 24,
       commentCount: 12,
@@ -63,12 +75,13 @@ export default function MyPage() {
     {
       id: "3",
       title: "JavaScript Performance Optimization Tips",
-      content: "Here are some practical tips to optimize your JavaScript code...",
+      content:
+        "Here are some practical tips to optimize your JavaScript code...",
       timestamp: new Date("2024-01-15T09:45:00"),
       empathyCount: 42,
       commentCount: 15,
     },
-  ])
+  ]);
 
   // Mock badges data
   const [badges] = useState<BadgeItem[]>([
@@ -142,9 +155,9 @@ export default function MyPage() {
       earned: false,
       color: "bg-gray-400",
     },
-  ])
+  ]);
 
-  const earnedBadges = badges.filter((badge) => badge.earned)
+  const earnedBadges = badges.filter((badge) => badge.earned);
 
   return (
     <div className="min-h-screen bg-white">
@@ -155,7 +168,9 @@ export default function MyPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarFallback className="bg-blue-500 text-white text-xl">{user.nickname.charAt(0)}</AvatarFallback>
+                  <AvatarFallback className="bg-blue-500 text-white text-xl">
+                    {user.nickname.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
                   <h1 className="text-2xl font-bold">{user.nickname}</h1>
@@ -201,12 +216,21 @@ export default function MyPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <Link href={`/posts/${post.id}`} className="text-lg font-semibold hover:text-blue-600">
+                        <Link
+                          href={`/posts/${post.id}`}
+                          className="text-lg font-semibold hover:text-blue-600"
+                        >
                           {post.title}
                         </Link>
-                        <p className="text-gray-600 mt-1 mb-3 line-clamp-2">{post.content}</p>
+                        <p className="text-gray-600 mt-1 mb-3 line-clamp-2">
+                          {post.content}
+                        </p>
                         <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span>{formatDistanceToNow(post.timestamp, { addSuffix: true })}</span>
+                          <span>
+                            {formatDistanceToNow(post.timestamp, {
+                              addSuffix: true,
+                            })}
+                          </span>
                           <div className="flex items-center gap-1">
                             <Heart className="h-4 w-4" />
                             <span>{post.empathyCount} empathy</span>
@@ -235,17 +259,29 @@ export default function MyPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {badges.map((badge) => (
-                <Card key={badge.id} className={`${badge.earned ? "" : "opacity-60"}`}>
+                <Card
+                  key={badge.id}
+                  className={`${badge.earned ? "" : "opacity-60"}`}
+                >
                   <CardContent className="pt-4">
                     <div className="flex items-start gap-3">
-                      <div className={`${badge.color} p-3 rounded-full text-white`}>{badge.icon}</div>
+                      <div
+                        className={`${badge.color} p-3 rounded-full text-white`}
+                      >
+                        {badge.icon}
+                      </div>
                       <div className="flex-1">
                         <h3 className="font-semibold">{badge.name}</h3>
-                        <p className="text-sm text-gray-600 mb-2">{badge.description}</p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {badge.description}
+                        </p>
                         {badge.earned && badge.earnedDate ? (
                           <Badge variant="secondary" className="text-xs">
                             <Calendar className="h-3 w-3 mr-1" />
-                            Earned {formatDistanceToNow(badge.earnedDate, { addSuffix: true })}
+                            Earned{" "}
+                            {formatDistanceToNow(badge.earnedDate, {
+                              addSuffix: true,
+                            })}
                           </Badge>
                         ) : (
                           <Badge variant="outline" className="text-xs">
@@ -262,5 +298,5 @@ export default function MyPage() {
         </Tabs>
       </main>
     </div>
-  )
+  );
 }

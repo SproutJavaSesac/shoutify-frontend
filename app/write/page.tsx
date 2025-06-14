@@ -1,17 +1,23 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, Upload, X, Eye } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Upload, X, Eye } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -19,9 +25,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/hooks/use-toast"
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 const emotionEmojis = {
   happy: "😊",
@@ -29,7 +35,7 @@ const emotionEmojis = {
   excited: "🤩",
   confused: "😕",
   proud: "😤",
-}
+};
 
 const emotionColors = {
   happy: "bg-yellow-100 text-yellow-800",
@@ -37,22 +43,22 @@ const emotionColors = {
   excited: "bg-purple-100 text-purple-800",
   confused: "bg-gray-100 text-gray-800",
   proud: "bg-green-100 text-green-800",
-}
+};
 
 export default function CreatePostPage() {
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [emotion, setEmotion] = useState<string | undefined>()
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [previewOpen, setPreviewOpen] = useState(false)
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [emotion, setEmotion] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // Check file type
     if (!file.type.startsWith("image/")) {
@@ -60,8 +66,8 @@ export default function CreatePostPage() {
         title: "Invalid file type",
         description: "Please upload an image file",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     // Check file size (max 5MB)
@@ -70,19 +76,19 @@ export default function CreatePostPage() {
         title: "File too large",
         description: "Image must be less than 5MB",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setImageFile(file)
-    const objectUrl = URL.createObjectURL(file)
-    setImageUrl(objectUrl)
-  }
+    setImageFile(file);
+    const objectUrl = URL.createObjectURL(file);
+    setImageUrl(objectUrl);
+  };
 
   const removeImage = () => {
-    setImageUrl(null)
-    setImageFile(null)
-  }
+    setImageUrl(null);
+    setImageFile(null);
+  };
 
   const handlePreview = () => {
     if (!title.trim()) {
@@ -90,8 +96,8 @@ export default function CreatePostPage() {
         title: "Title required",
         description: "Please enter a title for your post",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (!content.trim()) {
@@ -99,22 +105,22 @@ export default function CreatePostPage() {
         title: "Content required",
         description: "Please enter content for your post",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setPreviewOpen(true)
-  }
+    setPreviewOpen(true);
+  };
 
   const handleSubmit = () => {
     toast({
       title: "Post created",
       description: "Your post has been created successfully",
-    })
+    });
 
     // Redirect to posts page
-    router.push("/posts")
-  }
+    router.push("/posts");
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -122,7 +128,11 @@ export default function CreatePostPage() {
         {/* Back Button */}
         <div className="mb-6">
           <Link href="/posts">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Back to Posts
             </Button>
@@ -131,7 +141,9 @@ export default function CreatePostPage() {
 
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Create a New Post</h1>
-          <p className="text-gray-600">Share your knowledge with the community</p>
+          <p className="text-gray-600">
+            Share your knowledge with the community
+          </p>
         </div>
 
         <div className="space-y-6">
@@ -161,7 +173,9 @@ export default function CreatePostPage() {
 
           {/* Emotion Select */}
           <div className="space-y-2">
-            <Label htmlFor="emotion">How are you feeling about this post? (Optional)</Label>
+            <Label htmlFor="emotion">
+              How are you feeling about this post? (Optional)
+            </Label>
             <Select value={emotion} onValueChange={setEmotion}>
               <SelectTrigger id="emotion">
                 <SelectValue placeholder="Select an emotion (optional)" />
@@ -202,12 +216,21 @@ export default function CreatePostPage() {
                   <div className="bg-gray-100 rounded-full p-3 mb-3">
                     <Upload className="h-6 w-6 text-gray-500" />
                   </div>
-                  <p className="text-sm font-medium mb-1">Drag and drop an image or click to browse</p>
-                  <p className="text-xs text-gray-500 mb-4">PNG, JPG or GIF (max 5MB)</p>
+                  <p className="text-sm font-medium mb-1">
+                    Drag and drop an image or click to browse
+                  </p>
+                  <p className="text-xs text-gray-500 mb-4">
+                    PNG, JPG or GIF (max 5MB)
+                  </p>
                   <Button type="button" variant="outline" size="sm" asChild>
                     <label>
                       Browse Files
-                      <input type="file" accept="image/*" className="sr-only" onChange={handleImageUpload} />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="sr-only"
+                        onChange={handleImageUpload}
+                      />
                     </label>
                   </Button>
                 </div>
@@ -229,7 +252,9 @@ export default function CreatePostPage() {
           <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Post Preview</DialogTitle>
-              <DialogDescription>This is how your post will appear to others</DialogDescription>
+              <DialogDescription>
+                This is how your post will appear to others
+              </DialogDescription>
             </DialogHeader>
 
             <div className="py-4 space-y-4">
@@ -238,8 +263,11 @@ export default function CreatePostPage() {
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold flex-1">{title}</h2>
                   {emotion && (
-                    <Badge className={`${emotionColors[emotion as keyof typeof emotionColors]} text-xs ml-4`}>
-                      {emotionEmojis[emotion as keyof typeof emotionEmojis]} {emotion}
+                    <Badge
+                      className={`${emotionColors[emotion as keyof typeof emotionColors]} text-xs ml-4`}
+                    >
+                      {emotionEmojis[emotion as keyof typeof emotionEmojis]}{" "}
+                      {emotion}
                     </Badge>
                   )}
                 </div>
@@ -259,7 +287,11 @@ export default function CreatePostPage() {
               {/* Post Image */}
               {imageUrl && (
                 <div className="border border-gray-200 rounded-lg p-4">
-                  <img src={imageUrl || "/placeholder.svg"} alt="Post image" className="w-full h-auto rounded-md" />
+                  <img
+                    src={imageUrl || "/placeholder.svg"}
+                    alt="Post image"
+                    className="w-full h-auto rounded-md"
+                  />
                 </div>
               )}
             </div>
@@ -274,5 +306,5 @@ export default function CreatePostPage() {
         </Dialog>
       </main>
     </div>
-  )
+  );
 }
