@@ -1,58 +1,88 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, Calendar, TrendingUp, TrendingDown, Minus, Crown, Trophy, Medal } from "lucide-react"
-import { Line, LineChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
+import { useState } from "react";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  Calendar,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Crown,
+  Trophy,
+  Medal,
+} from "lucide-react";
+import {
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 interface RankHistory {
-  date: string
-  postsRank: number
-  empathyRank: number
-  languageRank: number
+  date: string;
+  postsRank: number;
+  empathyRank: number;
+  languageRank: number;
 }
 
 interface BadgeItem {
-  id: string
-  name: string
-  description: string
-  icon: React.ReactNode
-  earned: boolean
-  earnedDate?: Date
-  color: string
-  category: "achievement" | "milestone" | "special"
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ReactNode;
+  earned: boolean;
+  earnedDate?: Date;
+  color: string;
+  category: "achievement" | "milestone" | "special";
 }
 
 interface UserProfile {
-  id: string
-  nickname: string
-  avatar?: string
+  id: string;
+  nickname: string;
+  avatar?: string;
   currentRanks: {
-    posts: number
-    empathy: number
-    language: number
-  }
+    posts: number;
+    empathy: number;
+    language: number;
+  };
   stats: {
-    postsCount: number
-    empathyCount: number
-    cleanLanguageScore: number
-    joinDate: Date
-    totalBadges: number
-  }
-  rankHistory: RankHistory[]
-  badges: BadgeItem[]
+    postsCount: number;
+    empathyCount: number;
+    cleanLanguageScore: number;
+    joinDate: Date;
+    totalBadges: number;
+  };
+  rankHistory: RankHistory[];
+  badges: BadgeItem[];
 }
 
-export default function RankingDetailPage({ params }: { params: { userId: string } }) {
-  const [activeTab, setActiveTab] = useState("posts")
+export default function RankingDetailPage({
+  params,
+}: {
+  params: { userId: string };
+}) {
+  const [activeTab, setActiveTab] = useState("posts");
 
   // Mock user data
   const user: UserProfile = {
@@ -159,59 +189,73 @@ export default function RankingDetailPage({ params }: { params: { userId: string
         category: "achievement",
       },
     ],
-  }
+  };
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
-        return <Crown className="h-5 w-5 text-yellow-500" />
+        return <Crown className="h-5 w-5 text-yellow-500" />;
       case 2:
-        return <Trophy className="h-5 w-5 text-gray-400" />
+        return <Trophy className="h-5 w-5 text-gray-400" />;
       case 3:
-        return <Medal className="h-5 w-5 text-amber-600" />
+        return <Medal className="h-5 w-5 text-amber-600" />;
       default:
-        return <span className="text-sm font-bold text-muted-foreground">#{rank}</span>
+        return (
+          <span className="text-sm font-bold text-muted-foreground">
+            #{rank}
+          </span>
+        );
     }
-  }
+  };
 
   const getRankTrend = (currentRank: number, previousRank: number) => {
-    const change = previousRank - currentRank
+    const change = previousRank - currentRank;
     if (change > 0) {
       return (
         <div className="flex items-center text-green-600">
           <TrendingUp className="h-4 w-4 mr-1" />
           <span className="text-sm">+{change}</span>
         </div>
-      )
+      );
     } else if (change < 0) {
       return (
         <div className="flex items-center text-red-600">
           <TrendingDown className="h-4 w-4 mr-1" />
           <span className="text-sm">{change}</span>
         </div>
-      )
+      );
     } else {
       return (
         <div className="flex items-center text-gray-400">
           <Minus className="h-4 w-4" />
         </div>
-      )
+      );
     }
-  }
+  };
 
   const getChartData = (type: "posts" | "empathy" | "language") => {
     return user.rankHistory.map((entry) => ({
-      date: new Date(entry.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-      rank: type === "posts" ? entry.postsRank : type === "empathy" ? entry.empathyRank : entry.languageRank,
-    }))
-  }
+      date: new Date(entry.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+      rank:
+        type === "posts"
+          ? entry.postsRank
+          : type === "empathy"
+            ? entry.empathyRank
+            : entry.languageRank,
+    }));
+  };
 
-  const earnedBadges = user.badges.filter((badge) => badge.earned)
+  const earnedBadges = user.badges.filter((badge) => badge.earned);
   const badgesByCategory = {
-    achievement: earnedBadges.filter((badge) => badge.category === "achievement"),
+    achievement: earnedBadges.filter(
+      (badge) => badge.category === "achievement",
+    ),
     milestone: earnedBadges.filter((badge) => badge.category === "milestone"),
     special: earnedBadges.filter((badge) => badge.category === "special"),
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -219,7 +263,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
         {/* Back Button */}
         <div className="mb-6">
           <Link href="/ranking">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Back to Ranking
             </Button>
@@ -278,19 +326,29 @@ export default function RankingDetailPage({ params }: { params: { userId: string
               {/* Stats Summary */}
               <div className="grid grid-cols-2 md:grid-cols-1 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-blue-600">{user.stats.postsCount}</div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {user.stats.postsCount}
+                  </div>
                   <div className="text-sm text-muted-foreground">Posts</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-green-600">{user.stats.empathyCount.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {user.stats.empathyCount.toLocaleString()}
+                  </div>
                   <div className="text-sm text-muted-foreground">Empathy</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-600">{user.stats.cleanLanguageScore}%</div>
-                  <div className="text-sm text-muted-foreground">Language Score</div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {user.stats.cleanLanguageScore}%
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Language Score
+                  </div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-600">{user.stats.totalBadges}</div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {user.stats.totalBadges}
+                  </div>
                   <div className="text-sm text-muted-foreground">Badges</div>
                 </div>
               </div>
@@ -304,10 +362,16 @@ export default function RankingDetailPage({ params }: { params: { userId: string
             <Card>
               <CardHeader>
                 <CardTitle>Rank History</CardTitle>
-                <CardDescription>Track ranking changes over time (lower is better)</CardDescription>
+                <CardDescription>
+                  Track ranking changes over time (lower is better)
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+                <Tabs
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                  className="space-y-4"
+                >
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="posts">Posts</TabsTrigger>
                     <TabsTrigger value="empathy">Empathy</TabsTrigger>
@@ -328,7 +392,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                         <LineChart data={getChartData("posts")}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="date" />
-                          <YAxis domain={[1, 10]} reversed={true} tickFormatter={(value) => `#${value}`} />
+                          <YAxis
+                            domain={[1, 10]}
+                            reversed={true}
+                            tickFormatter={(value) => `#${value}`}
+                          />
                           <ChartTooltip
                             content={<ChartTooltipContent />}
                             formatter={(value) => [`#${value}`, "Rank"]}
@@ -338,7 +406,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                             dataKey="rank"
                             stroke="var(--color-rank)"
                             strokeWidth={3}
-                            dot={{ fill: "var(--color-rank)", strokeWidth: 2, r: 6 }}
+                            dot={{
+                              fill: "var(--color-rank)",
+                              strokeWidth: 2,
+                              r: 6,
+                            }}
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -359,7 +431,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                         <LineChart data={getChartData("empathy")}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="date" />
-                          <YAxis domain={[1, 10]} reversed={true} tickFormatter={(value) => `#${value}`} />
+                          <YAxis
+                            domain={[1, 10]}
+                            reversed={true}
+                            tickFormatter={(value) => `#${value}`}
+                          />
                           <ChartTooltip
                             content={<ChartTooltipContent />}
                             formatter={(value) => [`#${value}`, "Rank"]}
@@ -369,7 +445,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                             dataKey="rank"
                             stroke="var(--color-rank)"
                             strokeWidth={3}
-                            dot={{ fill: "var(--color-rank)", strokeWidth: 2, r: 6 }}
+                            dot={{
+                              fill: "var(--color-rank)",
+                              strokeWidth: 2,
+                              r: 6,
+                            }}
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -390,7 +470,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                         <LineChart data={getChartData("language")}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="date" />
-                          <YAxis domain={[1, 10]} reversed={true} tickFormatter={(value) => `#${value}`} />
+                          <YAxis
+                            domain={[1, 10]}
+                            reversed={true}
+                            tickFormatter={(value) => `#${value}`}
+                          />
                           <ChartTooltip
                             content={<ChartTooltipContent />}
                             formatter={(value) => [`#${value}`, "Rank"]}
@@ -400,7 +484,11 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                             dataKey="rank"
                             stroke="var(--color-rank)"
                             strokeWidth={3}
-                            dot={{ fill: "var(--color-rank)", strokeWidth: 2, r: 6 }}
+                            dot={{
+                              fill: "var(--color-rank)",
+                              strokeWidth: 2,
+                              r: 6,
+                            }}
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -428,13 +516,24 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                   </h3>
                   <div className="space-y-3">
                     {badgesByCategory.achievement.map((badge) => (
-                      <div key={badge.id} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <div className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}>{badge.icon}</div>
+                      <div
+                        key={badge.id}
+                        className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                      >
+                        <div
+                          className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}
+                        >
+                          {badge.icon}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-sm">{badge.name}</h4>
-                          <p className="text-xs text-muted-foreground mb-1">{badge.description}</p>
+                          <p className="text-xs text-muted-foreground mb-1">
+                            {badge.description}
+                          </p>
                           {badge.earnedDate && (
-                            <p className="text-xs text-green-600">Earned {badge.earnedDate.toLocaleDateString()}</p>
+                            <p className="text-xs text-green-600">
+                              Earned {badge.earnedDate.toLocaleDateString()}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -449,13 +548,24 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                   </h3>
                   <div className="space-y-3">
                     {badgesByCategory.milestone.map((badge) => (
-                      <div key={badge.id} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <div className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}>{badge.icon}</div>
+                      <div
+                        key={badge.id}
+                        className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                      >
+                        <div
+                          className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}
+                        >
+                          {badge.icon}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-sm">{badge.name}</h4>
-                          <p className="text-xs text-muted-foreground mb-1">{badge.description}</p>
+                          <p className="text-xs text-muted-foreground mb-1">
+                            {badge.description}
+                          </p>
                           {badge.earnedDate && (
-                            <p className="text-xs text-green-600">Earned {badge.earnedDate.toLocaleDateString()}</p>
+                            <p className="text-xs text-green-600">
+                              Earned {badge.earnedDate.toLocaleDateString()}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -470,13 +580,24 @@ export default function RankingDetailPage({ params }: { params: { userId: string
                   </h3>
                   <div className="space-y-3">
                     {badgesByCategory.special.map((badge) => (
-                      <div key={badge.id} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <div className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}>{badge.icon}</div>
+                      <div
+                        key={badge.id}
+                        className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                      >
+                        <div
+                          className={`${badge.color} p-2 rounded-full text-white flex-shrink-0`}
+                        >
+                          {badge.icon}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-sm">{badge.name}</h4>
-                          <p className="text-xs text-muted-foreground mb-1">{badge.description}</p>
+                          <p className="text-xs text-muted-foreground mb-1">
+                            {badge.description}
+                          </p>
                           {badge.earnedDate && (
-                            <p className="text-xs text-green-600">Earned {badge.earnedDate.toLocaleDateString()}</p>
+                            <p className="text-xs text-green-600">
+                              Earned {badge.earnedDate.toLocaleDateString()}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -489,5 +610,5 @@ export default function RankingDetailPage({ params }: { params: { userId: string
         </div>
       </main>
     </div>
-  )
+  );
 }

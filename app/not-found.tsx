@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { Home, Search } from "lucide-react"
+import Link from "next/link";
+import { Home, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
@@ -9,8 +9,12 @@ export default function NotFound() {
       <div className="text-center">
         <div className="mb-8">
           <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-2">Page Not Found</h2>
-          <p className="text-gray-600 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-2">
+            Page Not Found
+          </h2>
+          <p className="text-gray-600 max-w-md mx-auto">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -29,5 +33,5 @@ export default function NotFound() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Plus } from "lucide-react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   // Don't show header on login/signup pages
   if (pathname === "/login" || pathname === "/signup") {
-    return null
+    return null;
   }
 
   return (
@@ -23,17 +23,26 @@ export default function Header() {
           </Link>
           <div className="flex items-center gap-6">
             <nav className="flex items-center gap-6">
-              <Link href="/ranking" className="text-sm hover:text-gray-300 transition-colors">
+              <Link
+                href="/ranking"
+                className="text-sm hover:text-gray-300 transition-colors"
+              >
                 Ranking
               </Link>
-              <Link href="/posts" className="text-sm hover:text-gray-300 transition-colors">
+              <Link
+                href="/posts"
+                className="text-sm hover:text-gray-300 transition-colors"
+              >
                 Posts
               </Link>
-              <Link href="/mypage" className="text-sm hover:text-gray-300 transition-colors">
+              <Link
+                href="/mypage"
+                className="text-sm hover:text-gray-300 transition-colors"
+              >
                 My Page
               </Link>
             </nav>
-            <Link href="/write">
+            <Link href="/posts/write">
               <Button
                 variant="secondary"
                 size="sm"
@@ -47,5 +56,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

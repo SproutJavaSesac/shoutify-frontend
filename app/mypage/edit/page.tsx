@@ -1,15 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ArrowLeft, Trash2, Save } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Trash2, Save } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,15 +26,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { useToast } from "@/hooks/use-toast"
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EditProfilePage() {
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [nickname, setNickname] = useState("CodeExplorer")
-  const [isLoading, setIsLoading] = useState(false)
+  const [nickname, setNickname] = useState("CodeExplorer");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveProfile = async () => {
     if (!nickname.trim()) {
@@ -36,39 +42,39 @@ export default function EditProfilePage() {
         title: "Nickname required",
         description: "Please enter a nickname",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: "Profile updated",
       description: "Your profile has been updated successfully",
-    })
+    });
 
-    setIsLoading(false)
-    router.push("/mypage")
-  }
+    setIsLoading(false);
+    router.push("/mypage");
+  };
 
   const handleDeleteAccount = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: "Account deleted",
       description: "Your account has been permanently deleted",
       variant: "destructive",
-    })
+    });
 
-    setIsLoading(false)
-    router.push("/")
-  }
+    setIsLoading(false);
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -76,7 +82,11 @@ export default function EditProfilePage() {
         {/* Back Button */}
         <div className="mb-6">
           <Link href="/mypage">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Back to My Page
             </Button>
@@ -93,16 +103,22 @@ export default function EditProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
-              <CardDescription>Update your basic profile information</CardDescription>
+              <CardDescription>
+                Update your basic profile information
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Avatar Preview */}
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarFallback className="bg-blue-500 text-white text-xl">{nickname.charAt(0)}</AvatarFallback>
+                  <AvatarFallback className="bg-blue-500 text-white text-xl">
+                    {nickname.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm text-gray-600">Your avatar is automatically generated from your nickname</p>
+                  <p className="text-sm text-gray-600">
+                    Your avatar is automatically generated from your nickname
+                  </p>
                 </div>
               </div>
 
@@ -116,12 +132,18 @@ export default function EditProfilePage() {
                   placeholder="Enter your nickname"
                   maxLength={20}
                 />
-                <p className="text-xs text-gray-500">Your nickname will be visible to other users</p>
+                <p className="text-xs text-gray-500">
+                  Your nickname will be visible to other users
+                </p>
               </div>
 
               {/* Save Button */}
               <div className="flex justify-end">
-                <Button onClick={handleSaveProfile} disabled={isLoading} className="flex items-center gap-2">
+                <Button
+                  onClick={handleSaveProfile}
+                  disabled={isLoading}
+                  className="flex items-center gap-2"
+                >
                   <Save className="h-4 w-4" />
                   {isLoading ? "Saving..." : "Save Changes"}
                 </Button>
@@ -132,23 +154,33 @@ export default function EditProfilePage() {
           {/* Danger Zone */}
           <Card className="border-red-200 dark:border-red-800">
             <CardHeader>
-              <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
-              <CardDescription>Permanently delete your account and all associated data</CardDescription>
+              <CardTitle className="text-red-600 dark:text-red-400">
+                Danger Zone
+              </CardTitle>
+              <CardDescription>
+                Permanently delete your account and all associated data
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="flex items-center gap-2">
+                  <Button
+                    variant="destructive"
+                    className="flex items-center gap-2"
+                  >
                     <Trash2 className="h-4 w-4" />
                     Delete Account
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete your account and remove all your data
-                      from our servers, including all posts, comments, and badges.
+                      This action cannot be undone. This will permanently delete
+                      your account and remove all your data from our servers,
+                      including all posts, comments, and badges.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -168,5 +200,5 @@ export default function EditProfilePage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

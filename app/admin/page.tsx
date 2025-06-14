@@ -1,40 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AlertTriangle, Users, Settings, Ban, CheckCircle } from "lucide-react"
+import { useState } from "react";
+import { AlertTriangle, Users, Settings, Ban, CheckCircle } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface Report {
-  id: string
-  type: "post" | "comment"
-  contentId: string
-  contentTitle: string
-  reportReason: string
-  reportedBy: string
-  reportedUser: string
-  timestamp: Date
-  status: "pending" | "resolved" | "dismissed"
+  id: string;
+  type: "post" | "comment";
+  contentId: string;
+  contentTitle: string;
+  reportReason: string;
+  reportedBy: string;
+  reportedUser: string;
+  timestamp: Date;
+  status: "pending" | "resolved" | "dismissed";
 }
 
 interface User {
-  id: string
-  nickname: string
-  email: string
-  status: "active" | "suspended" | "banned"
-  joinDate: Date
-  postsCount: number
-  reportsCount: number
+  id: string;
+  nickname: string;
+  email: string;
+  status: "active" | "suspended" | "banned";
+  joinDate: Date;
+  postsCount: number;
+  reportsCount: number;
 }
 
 export default function AdminPage() {
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   // Mock data
   const [reports] = useState<Report[]>([
@@ -60,7 +66,7 @@ export default function AdminPage() {
       timestamp: new Date("2024-01-20T15:20:00"),
       status: "pending",
     },
-  ])
+  ]);
 
   const [users] = useState<User[]>([
     {
@@ -81,7 +87,7 @@ export default function AdminPage() {
       postsCount: 12,
       reportsCount: 3,
     },
-  ])
+  ]);
 
   const [aiPrompt, setAiPrompt] =
     useState(`You are a content moderator for a developer community platform. Your role is to:
@@ -95,36 +101,44 @@ export default function AdminPage() {
 2. Suggest appropriate emotions for posts based on content sentiment
 3. Provide content improvement suggestions
 
-Please be fair and consider the context of technical discussions.`)
+Please be fair and consider the context of technical discussions.`);
 
-  const handleReportAction = (reportId: string, action: "resolve" | "dismiss") => {
+  const handleReportAction = (
+    reportId: string,
+    action: "resolve" | "dismiss",
+  ) => {
     toast({
       title: `Report ${action}d`,
       description: `The report has been ${action}d successfully.`,
-    })
-  }
+    });
+  };
 
-  const handleUserAction = (userId: string, action: "suspend" | "ban" | "unban") => {
+  const handleUserAction = (
+    userId: string,
+    action: "suspend" | "ban" | "unban",
+  ) => {
     toast({
       title: `User ${action}ned`,
       description: `The user has been ${action}ned successfully.`,
       variant: action === "ban" ? "destructive" : "default",
-    })
-  }
+    });
+  };
 
   const handleSaveAiPrompt = () => {
     toast({
       title: "AI Prompt Updated",
       description: "The AI moderation prompt has been updated successfully.",
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage reports, users, and system settings</p>
+          <p className="text-gray-600">
+            Manage reports, users, and system settings
+          </p>
         </div>
 
         <Tabs defaultValue="reports" className="space-y-6">
@@ -148,39 +162,63 @@ Please be fair and consider the context of technical discussions.`)
             <Card>
               <CardHeader>
                 <CardTitle>Content Reports</CardTitle>
-                <CardDescription>Review and manage user reports</CardDescription>
+                <CardDescription>
+                  Review and manage user reports
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {reports.map((report) => (
-                    <Card key={report.id} className="border-l-4 border-l-red-500">
+                    <Card
+                      key={report.id}
+                      className="border-l-4 border-l-red-500"
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
-                              <Badge variant={report.type === "post" ? "default" : "secondary"}>{report.type}</Badge>
-                              <span className="font-semibold">{report.contentTitle}</span>
+                              <Badge
+                                variant={
+                                  report.type === "post"
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                {report.type}
+                              </Badge>
+                              <span className="font-semibold">
+                                {report.contentTitle}
+                              </span>
                             </div>
                             <p className="text-sm text-gray-600">
                               <strong>Reason:</strong> {report.reportReason}
                             </p>
                             <p className="text-sm text-gray-600">
-                              <strong>Reported by:</strong> {report.reportedBy} |<strong> Reported user:</strong>{" "}
+                              <strong>Reported by:</strong> {report.reportedBy}{" "}
+                              |<strong> Reported user:</strong>{" "}
                               {report.reportedUser}
                             </p>
                             <p className="text-xs text-gray-500">
-                              {report.timestamp.toLocaleDateString()} {report.timestamp.toLocaleTimeString()}
+                              {report.timestamp.toLocaleDateString()}{" "}
+                              {report.timestamp.toLocaleTimeString()}
                             </p>
                           </div>
                           <div className="flex gap-2">
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => handleReportAction(report.id, "dismiss")}
+                              onClick={() =>
+                                handleReportAction(report.id, "dismiss")
+                              }
                             >
                               Dismiss
                             </Button>
-                            <Button size="sm" onClick={() => handleReportAction(report.id, "resolve")}>
+                            <Button
+                              size="sm"
+                              onClick={() =>
+                                handleReportAction(report.id, "resolve")
+                              }
+                            >
                               <CheckCircle className="h-4 w-4 mr-1" />
                               Resolve
                             </Button>
@@ -199,7 +237,9 @@ Please be fair and consider the context of technical discussions.`)
             <Card>
               <CardHeader>
                 <CardTitle>User Management</CardTitle>
-                <CardDescription>Manage user accounts and permissions</CardDescription>
+                <CardDescription>
+                  Manage user accounts and permissions
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -209,7 +249,9 @@ Please be fair and consider the context of technical discussions.`)
                         <div className="flex items-center justify-between">
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-semibold">{user.nickname}</span>
+                              <span className="font-semibold">
+                                {user.nickname}
+                              </span>
                               <Badge
                                 variant={
                                   user.status === "active"
@@ -222,9 +264,12 @@ Please be fair and consider the context of technical discussions.`)
                                 {user.status}
                               </Badge>
                             </div>
-                            <p className="text-sm text-gray-600">{user.email}</p>
+                            <p className="text-sm text-gray-600">
+                              {user.email}
+                            </p>
                             <div className="text-xs text-gray-500">
-                              Joined: {user.joinDate.toLocaleDateString()} | Posts: {user.postsCount} | Reports:{" "}
+                              Joined: {user.joinDate.toLocaleDateString()} |
+                              Posts: {user.postsCount} | Reports:{" "}
                               {user.reportsCount}
                             </div>
                           </div>
@@ -234,14 +279,18 @@ Please be fair and consider the context of technical discussions.`)
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleUserAction(user.id, "suspend")}
+                                  onClick={() =>
+                                    handleUserAction(user.id, "suspend")
+                                  }
                                 >
                                   Suspend
                                 </Button>
                                 <Button
                                   size="sm"
                                   variant="destructive"
-                                  onClick={() => handleUserAction(user.id, "ban")}
+                                  onClick={() =>
+                                    handleUserAction(user.id, "ban")
+                                  }
                                 >
                                   <Ban className="h-4 w-4 mr-1" />
                                   Ban
@@ -249,7 +298,12 @@ Please be fair and consider the context of technical discussions.`)
                               </>
                             )}
                             {user.status !== "active" && (
-                              <Button size="sm" onClick={() => handleUserAction(user.id, "unban")}>
+                              <Button
+                                size="sm"
+                                onClick={() =>
+                                  handleUserAction(user.id, "unban")
+                                }
+                              >
                                 Unban
                               </Button>
                             )}
@@ -268,7 +322,9 @@ Please be fair and consider the context of technical discussions.`)
             <Card>
               <CardHeader>
                 <CardTitle>AI Moderation Settings</CardTitle>
-                <CardDescription>Configure AI content moderation prompts</CardDescription>
+                <CardDescription>
+                  Configure AI content moderation prompts
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -288,5 +344,5 @@ Please be fair and consider the context of technical discussions.`)
         </Tabs>
       </main>
     </div>
-  )
+  );
 }

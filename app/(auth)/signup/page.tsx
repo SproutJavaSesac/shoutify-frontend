@@ -1,41 +1,47 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Mail, Lock, Eye, EyeOff, User } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignupPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [nickname, setNickname] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [agreeTerms, setAgreeTerms] = useState(false)
-  const [agreePrivacy, setAgreePrivacy] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !password || !confirmPassword || !nickname) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (password !== confirmPassword) {
@@ -43,8 +49,8 @@ export default function SignupPage() {
         title: "Password mismatch",
         description: "Passwords do not match",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (password.length < 8) {
@@ -52,8 +58,8 @@ export default function SignupPage() {
         title: "Password too short",
         description: "Password must be at least 8 characters long",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (!agreeTerms || !agreePrivacy) {
@@ -61,36 +67,41 @@ export default function SignupPage() {
         title: "Agreement required",
         description: "Please agree to the terms of service and privacy policy",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate signup process
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
       title: "Account created successfully",
-      description: "Welcome to our community! You can now start sharing your knowledge.",
-    })
+      description:
+        "Welcome to our community! You can now start sharing your knowledge.",
+    });
 
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   const handleSocialLogin = (provider: string) => {
     toast({
       title: `${provider} signup`,
       description: `Redirecting to ${provider}...`,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
-          <CardDescription>Join our community and start sharing your knowledge</CardDescription>
+          <CardTitle className="text-2xl font-bold">
+            Create your account
+          </CardTitle>
+          <CardDescription>
+            Join our community and start sharing your knowledge
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Social Login Buttons */}
@@ -180,7 +191,9 @@ export default function SignupPage() {
               <Separator className="w-full" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white dark:bg-gray-950 px-2 text-gray-500">Or continue with email</span>
+              <span className="bg-white dark:bg-gray-950 px-2 text-gray-500">
+                Or continue with email
+              </span>
             </div>
           </div>
 
@@ -248,7 +261,9 @@ export default function SignupPage() {
                   )}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500">Password must be at least 8 characters long</p>
+              <p className="text-xs text-gray-500">
+                Password must be at least 8 characters long
+              </p>
             </div>
 
             {/* Confirm Password Input */}
@@ -287,7 +302,9 @@ export default function SignupPage() {
                 <Checkbox
                   id="terms"
                   checked={agreeTerms}
-                  onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
+                  onCheckedChange={(checked) =>
+                    setAgreeTerms(checked as boolean)
+                  }
                 />
                 <Label htmlFor="terms" className="text-sm">
                   I agree to the{" "}
@@ -300,11 +317,16 @@ export default function SignupPage() {
                 <Checkbox
                   id="privacy"
                   checked={agreePrivacy}
-                  onCheckedChange={(checked) => setAgreePrivacy(checked as boolean)}
+                  onCheckedChange={(checked) =>
+                    setAgreePrivacy(checked as boolean)
+                  }
                 />
                 <Label htmlFor="privacy" className="text-sm">
                   I agree to the{" "}
-                  <Link href="/privacy" className="text-blue-600 hover:underline">
+                  <Link
+                    href="/privacy"
+                    className="text-blue-600 hover:underline"
+                  >
                     Privacy Policy
                   </Link>
                 </Label>
@@ -319,7 +341,9 @@ export default function SignupPage() {
 
           {/* Login Link */}
           <div className="text-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Already have an account? </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              Already have an account?{" "}
+            </span>
             <Link
               href="/login"
               className="font-medium text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300"
@@ -330,5 +354,5 @@ export default function SignupPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
