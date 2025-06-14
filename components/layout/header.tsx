@@ -42,7 +42,7 @@ export default function Header() {
                 My Page
               </Link>
             </nav>
-            <Link href="/write">
+            <Link href="/posts/write">
               <Button
                 variant="secondary"
                 size="sm"
